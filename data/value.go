@@ -36,6 +36,10 @@ type (
 	Map       map[string]Value
 )
 
+type HTML struct {
+	Content string
+}
+
 // Index retrieves a value from this list, or Undefined if out of bounds.
 func (v List) Index(i int) Value {
 	if !(0 <= i && i < len(v)) {
@@ -61,6 +65,7 @@ func (v Bool) Truthy() bool      { return bool(v) }
 func (v Int) Truthy() bool       { return v != 0 }
 func (v Float) Truthy() bool     { return v != 0.0 && float64(v) != math.NaN() }
 func (v String) Truthy() bool    { return v != "" }
+func (v HTML) Truthy() bool      { return v.Content != "" }
 func (v List) Truthy() bool      { return true }
 func (v Map) Truthy() bool       { return true }
 
@@ -72,6 +77,7 @@ func (v Bool) String() string      { return strconv.FormatBool(bool(v)) }
 func (v Int) String() string       { return strconv.FormatInt(int64(v), 10) }
 func (v Float) String() string     { return strconv.FormatFloat(float64(v), 'g', -1, 64) }
 func (v String) String() string    { return string(v) }
+func (v HTML) String() string      { return v.Content }
 
 func (v List) String() string {
 	var items = make([]string, len(v))
@@ -120,6 +126,13 @@ func (v Bool) Equals(other Value) bool {
 func (v String) Equals(other Value) bool {
 	if o, ok := other.(String); ok {
 		return string(v) == string(o)
+	}
+	return false
+}
+
+func (v HTML) Equals(other Value) bool {
+	if o, ok := other.(HTML); ok {
+		return v.Content == o.Content
 	}
 	return false
 }

@@ -377,7 +377,7 @@ func (t *tree) parseCallParams() []ast.Node {
 			key = firstIdent.val
 			value = t.itemList(itemParamEnd)
 			t.expect(itemRightDelim, "param")
-			params = append(params, &ast.CallParamContentNode{initial.pos, key, value})
+			params = append(params, &ast.CallParamContentNode{initial.pos, key, value, nil})
 			continue
 		case itemIdent:
 			key = firstIdent.val
@@ -400,7 +400,7 @@ func (t *tree) parseCallParams() []ast.Node {
 			t.expect(itemRightDelim, "param")
 			value = t.itemList(itemParamEnd)
 			t.expect(itemRightDelim, "param")
-			params = append(params, &ast.CallParamContentNode{initial.pos, key, value})
+			params = append(params, &ast.CallParamContentNode{initial.pos, key, value, attrs})
 		} else {
 			value = t.parseQuotedExpr(valueStr)
 			t.expect(itemRightDelimEnd, "param")

@@ -295,8 +295,12 @@ func (s *state) evalPrint(node *ast.PrintNode) {
 	if _, ok := s.val.(data.Undefined); ok {
 		s.errorf("In 'print' tag, expression %q evaluates to undefined.", node.Arg.String())
 	}
-	var escapeHtml = s.autoescape != ast.AutoescapeOff
 	var result = s.val
+
+	var escapeHtml = s.autoescape != ast.AutoescapeOff
+	if _, ok := result.(data.HTML); ok {
+		escapeHtml = false
+	}
 	for _, directiveNode := range node.Directives {
 		var directive, ok = PrintDirectives[directiveNode.Name]
 		if !ok {
@@ -367,7 +371,13 @@ func (s *state) evalCall(node *ast.CallNode) {
 		case *ast.CallParamValueNode:
 			callData.set(param.Key, s.eval(param.Value))
 		case *ast.CallParamContentNode:
-			callData.set(param.Key, data.New(string(s.renderBlock(param.Content))))
+			kind := param.Attrs["kind"]
+			switch kind {
+			case "html":
+				callData.set(param.Key, data.New(data.HTML{string(s.renderBlock(param.Content))}))
+			default:
+				callData.set(param.Key, data.New(string(s.renderBlock(param.Content))))
+			}
 		default:
 			s.errorf("unexpected call param type: %T", param)
 		}

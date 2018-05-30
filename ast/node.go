@@ -364,10 +364,15 @@ type CallParamContentNode struct {
 	Pos
 	Key     string
 	Content Node
+	Attrs   map[string]string
 }
 
 func (n *CallParamContentNode) String() string {
-	return fmt.Sprintf("{param %s}%s{/param}", n.Key, n.Content.String())
+	var expr = fmt.Sprintf("{param %s", n.Key)
+	for k, v := range n.Attrs {
+		expr += fmt.Sprintf(` %s="%s"`, k, v)
+	}
+	return expr + fmt.Sprintf("}%s{/param}", n.Content.String())
 }
 
 func (n *CallParamContentNode) Children() []Node {
