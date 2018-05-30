@@ -6,9 +6,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/robfig/soy/data"
-	"github.com/robfig/soy/parse"
-	"github.com/robfig/soy/soyhtml"
+	"github.com/poudels14/soy/data"
+	"github.com/poudels14/soy/parse"
+	"github.com/poudels14/soy/soyhtml"
 )
 
 // ParseGlobals parses the given input, expecting the form:

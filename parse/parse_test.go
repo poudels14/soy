@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/robfig/soy/ast"
-	"github.com/robfig/soy/data"
+	"github.com/poudels14/soy/ast"
+	"github.com/poudels14/soy/data"
 )
 
 type parseTest struct {

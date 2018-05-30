@@ -3,7 +3,7 @@ package soyhtml
 import (
 	"testing"
 
-	"github.com/robfig/soy/data"
+	"github.com/poudels14/soy/data"
 )
 
 var rangeTests = []struct{ args, result []int }{
